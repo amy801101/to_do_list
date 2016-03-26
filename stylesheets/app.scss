@@ -1,3 +1,103 @@
+/* Reset CSS */
+ol,
+ul {
+  list-style: none;
+}
+
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+a,
+a:hover,
+a:active,
+a:visited,
+a:focus {
+  text-decoration: none;
+}
+/* End Reset CSS */
+
 body{
-	background:#fdfdfd;
+	background-color: white;//#1EE6C2;
+}
+
+.container{
+	padding-top: 20px;
+}
+
+$var: 1em;
+.title_area{
+	padding: 20px 0px;
+	text-align: center;
+	display: block;
+	.title{
+		font-size: 4.5em;
+		display: inline-block;
+		margin-left: $var/2;
+	}
+	.subtitle{
+		display: inline-block;
+		width: $var;
+		font-size: $var;
+	}
+}
+
+.category{
+	margin: 5% 0;
+	text-align: center;
+}
+
+.todo{
+	margin: 1% 3%;
+	height: 5em;
+	padding: 2% 0;
+
+	.first_part{
+		/* dynamically vertical center */
+		display: block;
+		position: relative;
+	  	top: 50%;
+	  	transform: translateY(-50%);
+		.title{
+			display: inline-block;
+			width: 80%;
+			margin: 0 5%;
+			&.checked{
+				text-decoration: line-through;
+				font-style: italic;
+			}
+		}
+	}
+	.second_part{
+		/* dynamically vertical center */
+		display: block;
+		position: relative;
+	  	top: 50%;
+	  	transform: translateY(-50%);
+
+	  	text-align: center;
+	  	a.star{
+	  		color: #FFB700;
+	  	}
+	  	a.trash{
+	  		// color: red;
+	  	}
+	  	i{
+	  		display: block;
+	  		margin: 15% 0;
+	  	}
+	}
 }

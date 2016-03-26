@@ -1,10 +1,29 @@
 <!doctype html>
 <html>
   <head>
+	<meta charset="UTF-8">
     <title>Awesome Todo</title>
+    <link rel="stylesheet" type="text/css" href="./stylesheets/app.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
   </head>
   <body>
-    <div id="root"></div>
+    <div class="container">
+    	<div class="col-md-6 col-md-offset-3" id="root">
+	    	<div class="title_area">
+	    		<div class="title">TODO</div>
+	    		<div class="subtitle">Beta</div>
+	    	</div>
+	    	<div id="content">
+	    		<div class="category_tab"></div>
+	    		<div class="todo_list"></div>
+	    	</div>
+    	</div>
+    </div>
     <script src="/dist/bundle.js"></script>
+    <script src="https://www.atlasestateagents.co.uk/javascript/tether.min.js"></script><!-- Tether for Bootstrap -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
+
   </body>
 </html>
