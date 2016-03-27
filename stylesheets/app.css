@@ -26,8 +26,16 @@ a:focus {
   text-decoration: none; }
 
 /* End Reset CSS */
+html {
+  height: 100%; }
+
 body {
-  background-color: white; }
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background: linear-gradient(white, #2AD2D2); }
 
 .container {
   padding-top: 20px; }
@@ -35,11 +43,13 @@ body {
 .title_area {
   padding: 20px 0px;
   text-align: center;
-  display: block; }
+  display: block;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 100;
+  color: #00CC9A; }
   .title_area .title {
-    font-size: 4.5em;
-    display: inline-block;
-    margin-left: 0.5em; }
+    font-size: 5em;
+    display: inline-block; }
   .title_area .subtitle {
     display: inline-block;
     width: 1em;
@@ -47,18 +57,38 @@ body {
 
 .category {
   margin: 5% 0;
-  text-align: center; }
+  text-align: center;
+  color: #9AA3A4; }
+  .category:hover, .category:focus {
+    color: #00CC9A; }
+
+.todo_creation {
+  margin: 0 0; }
+  .todo_creation input {
+    height: 4em;
+    border-radius: 0; }
+  .todo_creation button {
+    height: 4em;
+    border-radius: 0;
+    border-left: none;
+    color: #00CC9A; }
 
 .todo {
-  margin: 1% 3%;
+  margin: 0 0;
   height: 5em;
-  padding: 2% 0; }
+  padding: 3% 3%;
+  /* border: blue; */
+  border-style: solid;
+  border-width: 1px;
+  border-color: #DDD;
+  background-color: white; }
   .todo .first_part {
     /* dynamically vertical center */
     display: block;
     position: relative;
     top: 50%;
-    transform: translateY(-50%); }
+    transform: translateY(-50%);
+    color: #00CC9A; }
     .todo .first_part .title {
       display: inline-block;
       width: 80%;
@@ -72,11 +102,27 @@ body {
     position: relative;
     top: 50%;
     transform: translateY(-50%);
-    text-align: center; }
+    text-align: right; }
     .todo .second_part a.star {
       color: #FFB700; }
     .todo .second_part i {
       display: block;
       margin: 15% 0; }
+
+.fixed-top {
+  display: block;
+  position: fixed;
+  right: 0;
+  left: 0;
+  z-index: 1030;
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%; }
+  .fixed-top.category_tab {
+    top: 0; }
+  .fixed-top.todo_creation {
+    top: 4em; }
+    .fixed-top.todo_creation input {
+      width: 90%; }
 
 /*# sourceMappingURL=app.css.map */

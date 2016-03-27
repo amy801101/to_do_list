@@ -16,10 +16,12 @@ class Content extends React.Component{
 	}
 	render(){
 		return(
-			<div> 
+		<div className="row">
+			<div className="col-md-12">
 				<CategoryTab changeCategory={this.changeCategory.bind(this)}/>
-	    		<TodoContent category={this.state.category}/>
-	    	</div>
+    			<TodoContent category={this.state.category}/>
+    		</div>
+	    </div>
 	    );
 	}
 }
@@ -27,17 +29,10 @@ class Content extends React.Component{
 class CategoryTab extends React.Component{
 	constructor(){
 		super();
-		// this.state = {
-		// 	category: 0
-		// };
-		//this.update = this.update.bind(this);
 	}
-	// update(e){
-	// 	this.setState({txt:e.target.value})
-	// }
 	render(){
 		return (
-			<div className="category_tab col-md-12"> 
+			<div className="category_tab"> 
 				<Category id={0} name="All" changeCategory={this.props.changeCategory}/>
 				<Category id={1} name="Starred" changeCategory={this.props.changeCategory}/>
 				<Category id={2} name="Actived" changeCategory={this.props.changeCategory}/>
@@ -51,8 +46,8 @@ const Category = (props) => {
 	let id = props.id;
 	let name = props.name;
 	return (
-		<a href="javascript:void(0)" onClick={props.changeCategory.bind(this, id)}>
-			<div className="category col-md-3" id={"cat_"+id}>{name}</div>
+		<a className="category col-md-3" href="javascript:void(0)" onClick={props.changeCategory.bind(this, id)}>
+			<div id={"cat_"+id}>{name}</div>
 		</a>
 	);
 }
@@ -64,19 +59,31 @@ class TodoContent extends React.Component{
 			todos: [],
 			max_id: 0
 		};
-		//this.createTodo = this.createTodo.bind(this);
 	}
 	componentWillMount(){
-		let init_obj = [{
-						'id': 0,
-						'title': 'Loading..' ,
-						'checked': false,
-						'starred': false,
-						}];
-		this.setState({
-			todos: init_obj,
-			max_id: init_obj[0].id
-		});
+		let max_id = 0;
+		let init_obj = JSON.parse(localStorage.getItem('todo_state') || '{}');
+		console.log(init_obj);
+		if('todos' in init_obj){
+			this.setState(init_obj);	
+		} else {
+			this.setState({
+				todos: [],
+				max_id: 0
+			});
+		}
+		// let init_obj = [{
+		// 				'id': 0,
+		// 				'title': 'Loading..' ,
+		// 				'checked': false,
+		// 				'starred': false,
+		// 				}];
+	}
+	componentDidUpdate(prevProps, prevState){
+		if(prevState !== this.state){
+			console.log('componentDidUpdate!');
+			localStorage.setItem('todo_state', JSON.stringify(this.state));
+		}
 	}
 	findTodoIndexById(id){
 		let todos = this.state.todos; 
@@ -85,6 +92,15 @@ class TodoContent extends React.Component{
 		    	return i; 
 		    }
 		}
+	}
+	findTodosMaxId(todos){
+		let max_id = 0;
+		for (var i = 0, len = todos.length; i < len; i++) {
+		    if(todos[i].id > max_id){
+		    	max_id = todos[i].id ; 
+		    }
+		}
+		return max_id;
 	}
 	createTodo(txt, event){
 		if(txt !== ''){ 
@@ -145,11 +161,11 @@ class TodoCreation extends React.Component{
 	}
 	render(){
 		return (
-			<div className="input-group">
+			<div className="input-group todo_creation">
 	    		<input type="text" className="form-control" placeholder="Type Something..." onChange={this.updateCreationTxt}/>
 		      	<span className="input-group-btn">
 		        	<button className="btn btn-secondary" type="button" onClick={this.props.create.bind(this, this.state.txt)}>
-		        	    <i className="fa fa-plus"></i>
+		        	    <i className="fa fa-plus fa-lg"></i>
         			</button>
 		      	</span>
 		    </div>
@@ -162,43 +178,47 @@ class TodoList extends React.Component{
 		super();
 	}
 	render(){
-		return (
-			<div>
-			{this.props.todos.map(function(todo, i){
-				let attr_in_category = '';
-				switch(this.props.category){
-					case 0:
-						return (
-		        			<Todo todo={todo} key={i} toggle={this.props.toggle} deleteTodo={this.props.deleteTodo} />
-		        		);
-        				break;
-					case 1: //starred
-						if(todo.starred){
+		let todos = this.props.todos;
+		if(todos.length>0){
+			return (
+				<div>
+				{this.props.todos.map(function(todo, i){
+					switch(this.props.category){
+						case 0:
 							return (
-		        				<Todo todo={todo} key={i} toggle={this.props.toggle} deleteTodo={this.props.deleteTodo} />
-		        			);
-						}
-						break;
-					case 2: //actived
-						if(!todo.checked){
-							return (
-		        				<Todo todo={todo} key={i} toggle={this.props.toggle} deleteTodo={this.props.deleteTodo} />
-		        			);
-						}
-						break;
-					case 3: //completed
-						if(todo.checked){
-							return (
-		        				<Todo todo={todo} key={i} toggle={this.props.toggle} deleteTodo={this.props.deleteTodo} />
-		        			);
-						}
-						break;
-					default:
-        				break;
-				}
-    		}, this)}
-			</div>
-		);
+			        			<Todo todo={todo} key={i} toggle={this.props.toggle} deleteTodo={this.props.deleteTodo} />
+			        		);
+	        				break;
+						case 1: //starred
+							if(todo.starred){
+								return (
+			        				<Todo todo={todo} key={i} toggle={this.props.toggle} deleteTodo={this.props.deleteTodo} />
+			        			);
+							}
+							break;
+						case 2: //actived
+							if(!todo.checked){
+								return (
+			        				<Todo todo={todo} key={i} toggle={this.props.toggle} deleteTodo={this.props.deleteTodo} />
+			        			);
+							}
+							break;
+						case 3: //completed
+							if(todo.checked){
+								return (
+			        				<Todo todo={todo} key={i} toggle={this.props.toggle} deleteTodo={this.props.deleteTodo} />
+			        			);
+							}
+							break;
+						default:
+	        				break;
+					}
+	    		}, this)}
+				</div>
+			);
+		} else {
+			return (<div>No existing todos.</div>);
+		}
 	}
 }
 
@@ -238,5 +258,16 @@ const Todo = (props) => {
 	);
 }
 
-// render(<Content />, document.getElementsByClassName('content')[0]);
-render(<Content />, document.getElementById('content'));
+export class App extends Component {
+  render() {
+    return (
+      <div className="col-md-12">
+      	<div className="title_area">
+	    	<div className="title">TODO</div>
+	    	<div className="subtitle">beta</div>
+	    </div>
+        <Content />
+      </div>
+    );
+  }
+}

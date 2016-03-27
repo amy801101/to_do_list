@@ -1,29 +1,22 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { App } from './App';
+import $ from 'jquery';
 
-class Content extends React.Component{
-	constructor(){
-		super();
-		this.state = {
-			txt: 'this is the state txt',
-			category: 0
-		};
-		this.update = this.update.bind(this);
-	}
-	update(e){
-		this.setState({txt:e.target.value})
-	}
-	render(){
-		let txt = this.props.txt;
-		return(
-			<div> 
-				<div className="category_tab">124</div>
-	    		<div className="todo_content"></div>
-	    	</div>
-	    );
-	}
-}
+render(<App />, document.getElementById('root'));
 
-// render(<Content />, document.getElementsByClassName('content')[0]);
-render(<Content />, document.getElementById('content'));
+var num = 100; //number of pixels before modifying styles
+
+$(window).bind('scroll', function() {
+	//var navHeight = $(window).height() - 100;
+	if ($(document).height() > ($(window).height()+num) && $(window).scrollTop() > num) {
+		console.log('here: ');
+		console.log($(window).height());
+		console.log($(document).height());
+		$('.category_tab').addClass('fixed-top');
+        $('.todo_creation').addClass('fixed-top');
+	} else {
+		$('.category_tab').removeClass('fixed-top');
+        $('.todo_creation').removeClass('fixed-top');
+	}
+});
