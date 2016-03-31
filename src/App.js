@@ -1,13 +1,26 @@
 require('../stylesheets/app.scss');
 import React, { Component } from 'react';
 import { render } from 'react-dom';
+import { Link, RouteHandler } from 'react-router';
 
-class Content extends React.Component{
-	constructor(){
-		super();
+export class Content extends React.Component{
+	constructor(props){
+		super(props);
 		this.state = {
 			category: 0
 		};
+	}
+	componentWillMount(){
+		this.setState({
+			category: this.props.params.id
+		});
+	}
+	componentDidUpdate(prevProps, prevState){
+		if(prevProps !== this.props){
+			this.setState({
+				category: this.props.params.id
+			});
+		}
 	}
 	changeCategory(id, event){
 		this.setState({
@@ -16,12 +29,7 @@ class Content extends React.Component{
 	}
 	render(){
 		return(
-		<div className="row">
-			<div className="col-md-12">
-				<CategoryTab changeCategory={this.changeCategory.bind(this)}/>
-    			<TodoContent category={this.state.category}/>
-    		</div>
-	    </div>
+			<TodoContent category={this.state.category}/>
 	    );
 	}
 }
@@ -33,23 +41,32 @@ class CategoryTab extends React.Component{
 	render(){
 		return (
 			<div className="category_tab"> 
-				<Category id={0} name="All" changeCategory={this.props.changeCategory}/>
-				<Category id={1} name="Starred" changeCategory={this.props.changeCategory}/>
-				<Category id={2} name="Actived" changeCategory={this.props.changeCategory}/>
-				<Category id={3} name="Completed" changeCategory={this.props.changeCategory}/>
+				<Category id={0} name="All" />
+				<Category id={1} name="Starred" />
+				<Category id={2} name="Actived" />
+				<Category id={3} name="Completed" />
 	    	</div>
 	    );
 	}
 }
 
-const Category = (props) => {
-	let id = props.id;
-	let name = props.name;
-	return (
-		<a className="category col-md-3" href="javascript:void(0)" onClick={props.changeCategory.bind(this, id)}>
-			<div id={"cat_"+id}>{name}</div>
-		</a>
-	);
+class Category extends React.Component {
+	constructor(props) {
+    	super(props);
+  	}
+	render(){
+		//let id = this.getParams().id;
+		let id = this.props.id;
+		let name = this.props.name;
+		{/*return (
+			<a className="category col-md-3" href="javascript:void(0)" onClick={this.props.changeCategory.bind(this, id)}>
+				<div id={"cat_"+id}>{name}</div>
+			</a>
+		);*/}
+		return (
+			<Link to={"/content/"+id} params={{id_: id}} className="category col-md-3">{name}</Link>
+		);
+	}
 }
 
 class TodoContent extends React.Component{
@@ -63,7 +80,6 @@ class TodoContent extends React.Component{
 	componentWillMount(){
 		let max_id = 0;
 		let init_obj = JSON.parse(localStorage.getItem('todo_state') || '{}');
-		console.log(init_obj);
 		if('todos' in init_obj){
 			this.setState(init_obj);	
 		} else {
@@ -81,7 +97,6 @@ class TodoContent extends React.Component{
 	}
 	componentDidUpdate(prevProps, prevState){
 		if(prevState !== this.state){
-			console.log('componentDidUpdate!');
 			localStorage.setItem('todo_state', JSON.stringify(this.state));
 		}
 	}
@@ -163,7 +178,7 @@ class TodoCreation extends React.Component{
 		return (
 			<div className="input-group todo_creation">
 	    		<input type="text" className="form-control" placeholder="Type Something..." onChange={this.updateCreationTxt}/>
-		      	<span className="input-group-btn">
+		      	<span className="input-group-btn btn_group">
 		        	<button className="btn btn-secondary" type="button" onClick={this.props.create.bind(this, this.state.txt)}>
 		        	    <i className="fa fa-plus fa-lg"></i>
         			</button>
@@ -182,28 +197,28 @@ class TodoList extends React.Component{
 		if(todos.length>0){
 			return (
 				<div>
-				{this.props.todos.map(function(todo, i){
+				{todos.map(function(todo, i){
 					switch(this.props.category){
-						case 0:
+						case '0':
 							return (
 			        			<Todo todo={todo} key={i} toggle={this.props.toggle} deleteTodo={this.props.deleteTodo} />
 			        		);
 	        				break;
-						case 1: //starred
+						case '1': //starred
 							if(todo.starred){
 								return (
 			        				<Todo todo={todo} key={i} toggle={this.props.toggle} deleteTodo={this.props.deleteTodo} />
 			        			);
 							}
 							break;
-						case 2: //actived
+						case '2': //actived
 							if(!todo.checked){
 								return (
 			        				<Todo todo={todo} key={i} toggle={this.props.toggle} deleteTodo={this.props.deleteTodo} />
 			        			);
 							}
 							break;
-						case 3: //completed
+						case '3': //completed
 							if(todo.checked){
 								return (
 			        				<Todo todo={todo} key={i} toggle={this.props.toggle} deleteTodo={this.props.deleteTodo} />
@@ -242,11 +257,11 @@ const Todo = (props) => {
 	}
 	return (
 		<div className="todo">
-		    <a className="col-md-10 first_part" href="javascript:void(0)" onClick={props.toggle.bind(this, todo.id, !todo.checked, 'checked')}>
+		    <a className="col-md-10 col-xs-10 first_part" href="javascript:void(0)" onClick={props.toggle.bind(this, todo.id, !todo.checked, 'checked')}>
 		    	<i className={check_class_name}></i>
 		    	<div id={'todo_'+todo.id} className={title_class_name}>{todo.title}</div>
 		    </a>
-		    <div className="col-md-2 second_part">
+		    <div className="col-md-2 col-xs-2 second_part">
 		    	<a className="star" href="javascript:void(0)" onClick={props.toggle.bind(this, todo.id, !todo.starred, 'starred')}>
 		    		<i className={star_class_name}></i>
 		    	</a>
@@ -258,16 +273,24 @@ const Todo = (props) => {
 	);
 }
 
-export class App extends Component {
-  render() {
-    return (
-      <div className="col-md-12">
-      	<div className="title_area">
-	    	<div className="title">TODO</div>
-	    	<div className="subtitle">beta</div>
-	    </div>
-        <Content />
-      </div>
-    );
-  }
+export class App extends React.Component {
+	constructor(props) {
+    	super(props);
+  	}
+  	render() {
+	    return (
+	      <div className="col-md-12">
+	      	<div className="title_area">
+		    	<div className="title">TODO</div>
+		    	<div className="subtitle">beta</div>
+		    </div>
+		    <div className="row">
+				<div className="col-md-12">
+					<CategoryTab />
+					{this.props.children || <Content />}
+	    		</div>
+		    </div>
+	      </div>
+	    );
+  	}
 }

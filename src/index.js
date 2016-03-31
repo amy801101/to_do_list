@@ -1,22 +1,26 @@
 import React from 'react';
-import { render } from 'react-dom';
-import { App } from './App';
+import { render, ReactDOM } from 'react-dom';
+import { Router, Route, hashHistory, IndexRoute, IndexRedirect } from 'react-router';
+import { App, Content, CategoryTab, Category } from './App';
 import $ from 'jquery';
 
-render(<App />, document.getElementById('root'));
+var routes = (
+	<Route path="/" component={App}>
+		<IndexRedirect to="content/0" />
+		<Route name="contents" path="content/:id" component={Content} />
+	</Route>
+);
 
-var num = 100; //number of pixels before modifying styles
+render(<Router history={hashHistory}>{routes}</Router>, document.getElementById('root'));
 
-$(window).bind('scroll', function() {
-	//var navHeight = $(window).height() - 100;
-	if ($(document).height() > ($(window).height()+num) && $(window).scrollTop() > num) {
-		console.log('here: ');
-		console.log($(window).height());
-		console.log($(document).height());
-		$('.category_tab').addClass('fixed-top');
-        $('.todo_creation').addClass('fixed-top');
+var num = 50; //number of pixels before modifying styles
+
+$('.container').bind('scroll', function() {
+	if ($('.container').scrollTop() > num) {
+		$('.category_tab').addClass('fixed-top col-md-5 col-xs-10');
+        $('.todo_creation').addClass('fixed-top col-md-5 col-xs-10');
 	} else {
-		$('.category_tab').removeClass('fixed-top');
-        $('.todo_creation').removeClass('fixed-top');
+		$('.category_tab').removeClass('fixed-top col-md-5 col-xs-10');
+        $('.todo_creation').removeClass('fixed-top col-md-5 col-xs-10');
 	}
 });
