@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "postinstall": "node_modules/.bin/webpack", 
-    "start": "node devServer.js",
+    "start": "node Server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
