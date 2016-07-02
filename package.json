@@ -4,7 +4,6 @@
   "description": "",
   "main": "Server.js",
   "scripts": {
-    "dev": "webpack-dev-server --devtool eval --content-base build/ --colors --hot",
     "postinstall": "webpack --config ./webpack.config.js --progress --colors",
     "start": "node Server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
