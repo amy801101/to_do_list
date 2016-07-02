@@ -4,19 +4,20 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "postinstall": "webpack --config ./webpack.config.js --progress --colors",
     "start": "node Server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sudo-recruit/frontend_test.git"
+    "url": "git+https://github.com/amy801101/to_do_list.git"
   },
-  "author": "ocowchun <ocowchun@gmail.com>",
+  "author": "amy801101 <amy19911101@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sudo-recruit/frontend_test/issues"
+    "url": "https://github.com/amy801101/to_do_list/issues"
   },
-  "homepage": "https://github.com/sudo-recruit/frontend_test#readme",
+  "homepage": "https://github.com/amy801101/to_do_list#readme",
   "devDependencies": {
     "babel-core": "^6.6.5",
     "babel-loader": "^6.2.4",
