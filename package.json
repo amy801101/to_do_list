@@ -2,13 +2,14 @@
   "name": "frontend_test",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "Server.js",
   "scripts": {
+    "dev": "webpack-dev-server --devtool eval --content-base build/ --colors --hot",
     "postinstall": "webpack --config ./webpack.config.js --progress --colors",
     "start": "node Server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
+  "Repository": {
     "type": "git",
     "url": "git+https://github.com/amy801101/to_do_list.git"
   },
@@ -18,7 +19,7 @@
     "url": "https://github.com/amy801101/to_do_list/issues"
   },
   "homepage": "https://github.com/amy801101/to_do_list#readme",
-  "dependencies": {
+  "devDependencies": {
     "babel-core": "^6.6.5",
     "babel-loader": "^6.2.4",
     "babel-preset-es2015": "^6.3.13",
